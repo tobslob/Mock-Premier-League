@@ -14,5 +14,4 @@ before_script:
 script: 
   - npm run test
 after_success:
-  - npm run coverage
-  - npm run report-coverage
+  - npm run coveralls

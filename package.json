@@ -8,7 +8,8 @@
     "start:dev": "cross-env NODE_ENV=production nodemon --exec babel-node src/app.js",
     "test": "set DEBUG=http:* && cross-env NODE_ENV=test jest  --coverage --testPathPattern='.src/test/.*\\.spec\\.js$' --detectOpenHandles --runInBand --forceExit",
     "lint": "./node_modules/.bin/eslint",
-    "lint:fix": "./node_modules/.bin/eslint --fix"
+    "lint:fix": "./node_modules/.bin/eslint --fix",
+    "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test"
   },
   "repository": {
     "type": "git",
