@@ -2,6 +2,7 @@ import http from 'http';
 import morgan from 'morgan';
 import express from 'express';
 import bodyparser from 'body-parser';
+import messages from './utils/messages';
 
 const app = express();
 
@@ -12,8 +13,8 @@ app.use(bodyparser.json());
 // Home page route
 app.get('/', (req, res) => {
   res.status(200).json({
-    status: 200,
-    data: { message: 'Welcome to Mock Premier League' }
+    status: 'success',
+    data: { message: messages.welcome }
   });
 });
 
@@ -21,8 +22,8 @@ app.get('/', (req, res) => {
 app.use((err, req, res, next) => {
   if (err) {
     return res.status(500).json({
-      status: 500,
-      error: 'Internal server error'
+      status: 'error',
+      data: { message: messages.serverError }
     });
   }
   return next();
@@ -31,17 +32,18 @@ app.use((err, req, res, next) => {
 // Handle non exist route with with proper message
 app.use((req, res) => {
   res.status(404).json({
-    status: 404,
-    error: 'Wrong request. Route does not exist'
+    status: 'error',
+    data: { message: messages.notFound }
   });
 });
 
 const server = http.createServer(app);
 const port = process.env.PORT || 5500;
+const listen = messages.listenToServer;
 
-server.listen(port, () => {
+if (process.env.NODE_ENV !== 'test') {
   // eslint-disable-next-line no-console
-  console.log(`listening to server on 127.0.0.1:${port}`);
-});
+  server.listen(port, () => console.log(`${listen}:${port}`));
+}
 
 module.exports = app;
