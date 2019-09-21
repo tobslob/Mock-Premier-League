@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+  - "stable"
+notifications:
+  email: false
+services:
+  - postgresql
+cache:
+  directories:
+    - node_modules
+before_script:
+  - npm install
+  - psql -c 'create database travis_ci_test;' -U postgres
+script: 
+  - npm run test
+after_success:
+  - npm run coverage
+  - npm run report-coverage
