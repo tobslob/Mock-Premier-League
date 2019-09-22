@@ -1,14 +1,26 @@
 import http from 'http';
 import morgan from 'morgan';
 import express from 'express';
+import trimmer from 'trim-request-body';
 import bodyparser from 'body-parser';
 import messages from './utils/messages';
+import connect from './database/db';
+import user from './routes/userRoute';
 
 const app = express();
+
+// connect to database
+connect();
 
 app.use(morgan('dev'));
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
+
+// Trim the parsed request body
+app.use(trimmer);
+
+// api endpoints
+app.use('/api/v1/user', user);
 
 // Home page route
 app.get('/', (req, res) => {
