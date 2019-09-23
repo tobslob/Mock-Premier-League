@@ -10,7 +10,9 @@ const messages = {
   tokenError: 'Invalid token provided',
   tokenExpired: 'Expired token',
   error: 'An error occur',
-  duplicate: 'User already exist'
+  duplicate: 'User already exist',
+  IncorrectLoginDetails: 'Email or Password is incorrect',
+  userAuthorized: 'You are now logged in',
 };
 
 export default messages;

@@ -2,7 +2,9 @@ import express from 'express';
 import validate from '../middlewares/validator';
 import UserController from '../controllers/UserController';
 // import Authentication from '../middlewares/Authentication';
-import signUpSchema from '../validation/userSchema';
+import user from '../validation/userSchema';
+
+const { signInSchema, signUpSchema } = user;
 
 
 const router = express.Router();
@@ -13,8 +15,8 @@ router.post('/signup', validate(signUpSchema), UserController.createUser);
 // // delete user route
 // router.delete('/user/:userId', Authentication.verifyToken, Users.deleteUser);
 
-// // log in user in route
-// router.post('/user/login', validate(signInSchema), Users.loginUser);
+// log in user in route
+router.post('/login', validate(signInSchema), UserController.loginUser);
 
 // // Get all user in route
 // router.get('/users', Authentication.verifyToken, Users.getAllUser);
