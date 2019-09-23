@@ -1,7 +1,10 @@
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 import UserModel from '../models/userModel';
 import messages from '../utils/messages';
 import response from '../utils/response';
+
+dotenv.config();
 
 
 /**
@@ -42,17 +45,14 @@ class Authentication {
    */
   static async verifyToken(req, res, next) {
     try {
+      if (!req.headers.authorization) return response(res, 401, 'error', { message: messages.unAuthorized });
+
       const token = req.headers.authorization.split(' ')[1];
 
-      // check if token is provided
-      if (!token) return response(res, 403, 'error', { message: messages.unAuthorized });
-
-      // verify user provided token against existing token
       const decoded = await jwt.verify(token, process.env.SECRET_KEY);
 
-      // eslint-disable-next-line no-underscore-dangle
       const user = await UserModel.findOne({ _id: decoded._id });
-      // check for valid app users
+
       if (!user) return response(res, 401, 'error', { message: messages.tokenError });
 
       // get user payload

@@ -13,6 +13,9 @@ const messages = {
   duplicate: 'User already exist',
   IncorrectLoginDetails: 'Email or Password is incorrect',
   userAuthorized: 'You are now logged in',
+  unAuthorizedRoute: 'You do not have permission to this route',
+  userDeleteMessage: 'Sucessfully deleted',
+  castError: 'Invalid ID',
 };
 
 export default messages;

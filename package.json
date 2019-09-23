@@ -31,6 +31,7 @@
     "express": "^4.17.1",
     "express-error-handler": "^1.1.0",
     "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.3.2",
     "mongoose": "^5.7.1",
     "mongoose-unique-validator": "^2.0.3",
     "trim-request-body": "^1.0.1"
