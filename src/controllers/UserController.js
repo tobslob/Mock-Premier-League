@@ -35,7 +35,7 @@ class UserController {
         lastName
       });
 
-      const token = Authentication.generateToken(user.id, user.email, user.isAdmin);
+      const token = Authentication.generateToken(user._id, user.email, user.isAdmin);
 
       const doc = await user.save();
       if (doc) {
@@ -79,13 +79,54 @@ class UserController {
 
       const { _doc } = user;
 
-      const token = Authentication.generateToken(user.id, user.email, user.isAdmin);
+      const token = Authentication.generateToken(user._id, user.email, user.isAdmin);
 
       return response(res, 200, 'success', { token, ..._doc });
     } catch (error) {
       return response(res, 400, 'error', {
         message: messages.error
       });
+    }
+  }
+
+  /**
+   *  Delete user method
+   * @param {object} req - response object
+   * @param {object} res - response object
+   * @param {number} status - http status code
+   * @param {string} statusMessage - http status message
+   * @param {object} data - response data
+   *
+   * @returns {object} returns response
+   *
+   * @example
+   *
+   */
+  static async deleteUser(req, res) {
+    const { userId } = req.params;
+    try {
+      if (!req.user.isAdmin) {
+        return response(res, 400, 'error', {
+          message: messages.unAuthorizedRoute
+        });
+      }
+      const user = await UserModel.findOneAndDelete({ _id: userId }).exec();
+      if (!user) {
+        return response(res, 404, 'error', {
+          message: messages.notfound
+        });
+      }
+      return response(res, 200, 'success', {
+        message: messages.userDeleteMessage
+      });
+    } catch (error) {
+      error.name === 'CastError'
+        ? response(res, 400, 'error', {
+          message: messages.castError
+        })
+        : response(res, 400, 'error', {
+          message: messages.error
+        });
     }
   }
 }
