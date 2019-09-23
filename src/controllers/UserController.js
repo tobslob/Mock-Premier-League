@@ -129,6 +129,49 @@ class UserController {
         });
     }
   }
+
+  /**
+   *  Get a user method
+   * @param {object} req - response object
+   * @param {object} res - response object
+   * @param {number} status - http status code
+   * @param {string} statusMessage - http status message
+   * @param {object} data - response data
+   *
+   * @returns {object} returns response
+   *
+   * @example
+   *
+   */
+  static async getAUser(req, res) {
+    const { userId } = req.params;
+    try {
+      if (!req.user.isAdmin) {
+        return response(res, 400, 'error', {
+          message: messages.unAuthorizedRoute
+        });
+      }
+      const user = await UserModel.findById({ _id: userId })
+        .select('_id email firstName lastName')
+        .exec();
+      if (!user) {
+        return response(res, 404, 'error', {
+          message: messages.notfound
+        });
+      }
+      return response(res, 200, 'success', {
+        user
+      });
+    } catch (error) {
+      error.name === 'CastError'
+        ? response(res, 400, 'error', {
+          message: messages.castError
+        })
+        : response(res, 400, 'error', {
+          message: messages.error
+        });
+    }
+  }
 }
 
 export default UserController;

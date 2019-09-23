@@ -18,8 +18,8 @@ router.delete('/:userId', Authentication.verifyToken, UserController.deleteUser)
 // log in user in route
 router.post('/login', validate(signInSchema), UserController.loginUser);
 
-// // Get all user in route
-// router.get('/users', Authentication.verifyToken, Users.getAllUser);
+// Get a user in route
+router.get('/:userId', Authentication.verifyToken, UserController.getAUser);
 
 
 export default router;
