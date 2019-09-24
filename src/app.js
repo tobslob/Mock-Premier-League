@@ -6,6 +6,7 @@ import bodyparser from 'body-parser';
 import messages from './utils/messages';
 import connect from './database/db';
 import user from './routes/userRoute';
+import team from './routes/teamRoute';
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(trimmer);
 
 // api endpoints
 app.use('/api/v1/user', user);
+app.use('/api/v1', team);
 
 // Home page route
 app.get('/', (req, res) => {
