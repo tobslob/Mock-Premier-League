@@ -9,4 +9,7 @@ const router = express.Router();
 // create a team route
 router.post('/team', Authentication.verifyToken, validate(addTeamSchema), TeamController.addTeam);
 
+// remove a team route
+router.delete('/team/:teamId', Authentication.verifyToken, TeamController.removeTeam);
+
 export default router;
