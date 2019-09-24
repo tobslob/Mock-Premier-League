@@ -26,7 +26,7 @@ class TeamController {
     } = req.body;
     try {
       if (!req.user.isAdmin) {
-        return response(res, 404, 'error', {
+        return response(res, 403, 'error', {
           message: messages.unAuthorizedRoute
         });
       }
@@ -44,6 +44,47 @@ class TeamController {
       error.errors.teamName.name === 'ValidatorError'
         ? response(res, 409, 'error', {
           message: messages.duplicateName
+        })
+        : response(res, 400, 'error', {
+          message: messages.error
+        });
+    }
+  }
+
+  /**
+   *  admin can a remove team
+   * @param {object} req - response object
+   * @param {object} res - response object
+   * @param {number} status - http status code
+   * @param {string} statusMessage - http status message
+   * @param {object} data - response data
+   *
+   * @returns {object} returns response
+   *
+   * @example
+   *
+   */
+  static async removeTeam(req, res) {
+    const { teamId } = req.params;
+    try {
+      if (!req.user.isAdmin) {
+        return response(res, 403, 'error', {
+          message: messages.unAuthorizedRoute
+        });
+      }
+      const team = await TeamModel.findByIdAndDelete({ _id: teamId }).exec();
+      if (!team) {
+        return response(res, 404, 'error', {
+          message: messages.notfound
+        });
+      }
+      return response(res, 200, 'error', {
+        message: messages.deleteMessage
+      });
+    } catch (error) {
+      error.name === 'CastError'
+        ? response(res, 400, 'error', {
+          message: messages.castError
         })
         : response(res, 400, 'error', {
           message: messages.error

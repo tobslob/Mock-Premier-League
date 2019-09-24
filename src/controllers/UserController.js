@@ -106,7 +106,7 @@ class UserController {
     const { userId } = req.params;
     try {
       if (!req.user.isAdmin) {
-        return response(res, 400, 'error', {
+        return response(res, 403, 'error', {
           message: messages.unAuthorizedRoute
         });
       }
@@ -117,7 +117,7 @@ class UserController {
         });
       }
       return response(res, 200, 'success', {
-        message: messages.userDeleteMessage
+        message: messages.deleteMessage
       });
     } catch (error) {
       error.name === 'CastError'
@@ -147,7 +147,7 @@ class UserController {
     const { userId } = req.params;
     try {
       if (!req.user.isAdmin) {
-        return response(res, 400, 'error', {
+        return response(res, 403, 'error', {
           message: messages.unAuthorizedRoute
         });
       }
@@ -189,7 +189,7 @@ class UserController {
   static async getAllUser(req, res) {
     try {
       if (!req.user.isAdmin) {
-        return response(res, 400, 'error', {
+        return response(res, 403, 'error', {
           message: messages.unAuthorizedRoute
         });
       }
