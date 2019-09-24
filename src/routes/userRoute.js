@@ -21,5 +21,8 @@ router.post('/login', validate(signInSchema), UserController.loginUser);
 // Get a user in route
 router.get('/:userId', Authentication.verifyToken, UserController.getAUser);
 
+// Get all user in route
+router.get('/', Authentication.verifyToken, UserController.getAllUser);
+
 
 export default router;

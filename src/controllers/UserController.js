@@ -172,6 +172,40 @@ class UserController {
         });
     }
   }
+
+  /**
+   *  Get all user method
+   * @param {object} req - response object
+   * @param {object} res - response object
+   * @param {number} status - http status code
+   * @param {string} statusMessage - http status message
+   * @param {object} data - response data
+   *
+   * @returns {object} returns response
+   *
+   * @example
+   *
+   */
+  static async getAllUser(req, res) {
+    try {
+      if (!req.user.isAdmin) {
+        return response(res, 400, 'error', {
+          message: messages.unAuthorizedRoute
+        });
+      }
+      const users = await UserModel.find()
+        .select('email firstName lastName')
+        .exec();
+      return response(res, 200, 'success', {
+        users,
+        count: users.length
+      });
+    } catch (error) {
+      return response(res, 400, 'error', {
+        message: messages.error
+      });
+    }
+  }
 }
 
 export default UserController;
