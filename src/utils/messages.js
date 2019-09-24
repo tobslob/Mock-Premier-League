@@ -16,7 +16,8 @@ const messages = {
   unAuthorizedRoute: 'You do not have permission to this route',
   deleteMessage: 'Sucessfully deleted',
   castError: 'Invalid ID',
-  duplicateName: 'team already exist',
+  duplicateName: 'Team already exist',
+  updateMessage: 'Successfully updated'
 };
 
 export default messages;

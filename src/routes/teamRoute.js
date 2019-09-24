@@ -12,4 +12,7 @@ router.post('/team', Authentication.verifyToken, validate(addTeamSchema), TeamCo
 // remove a team route
 router.delete('/team/:teamId', Authentication.verifyToken, TeamController.removeTeam);
 
+// edit a team route
+router.put('/team/:teamId', Authentication.verifyToken, validate(addTeamSchema), TeamController.editTeam);
+
 export default router;
