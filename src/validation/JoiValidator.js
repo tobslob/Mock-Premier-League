@@ -19,7 +19,7 @@ const JoiValidation = {
   },
 
   validateArray() {
-    return Joi.array().items(Joi.string());
+    return Joi.array();
   },
 
   validateNumber() {
