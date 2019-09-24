@@ -144,6 +144,73 @@ class TeamController {
         });
     }
   }
+
+  /**
+   *  view a team method
+   * @param {object} req - response object
+   * @param {object} res - response object
+   * @param {number} status - http status code
+   * @param {string} statusMessage - http status message
+   * @param {object} data - response data
+   *
+   * @returns {object} returns response
+   *
+   * @example
+   *
+   */
+  static async viewATeam(req, res) {
+    const { teamId } = req.params;
+    try {
+      const team = await TeamModel.findById({ _id: teamId })
+        .select('_id teamName teamMembers description')
+        .exec();
+      if (!team) {
+        return response(res, 404, 'error', {
+          message: messages.notfound
+        });
+      }
+      return response(res, 200, 'success', {
+        team
+      });
+    } catch (error) {
+      error.name === 'CastError'
+        ? response(res, 400, 'error', {
+          message: messages.castError
+        })
+        : response(res, 400, 'error', {
+          message: messages.error
+        });
+    }
+  }
+
+  /**
+   *  view all team method
+   * @param {object} req - response object
+   * @param {object} res - response object
+   * @param {number} status - http status code
+   * @param {string} statusMessage - http status message
+   * @param {object} data - response data
+   *
+   * @returns {object} returns response
+   *
+   * @example
+   *
+   */
+  static async viewAllTeam(req, res) {
+    try {
+      const teams = await TeamModel.find()
+        .select('_id teamName teamMembers description')
+        .exec();
+      return response(res, 200, 'success', {
+        teams,
+        count: teams.length
+      });
+    } catch (error) {
+      return response(res, 400, 'error', {
+        message: messages.error
+      });
+    }
+  }
 }
 
 export default TeamController;

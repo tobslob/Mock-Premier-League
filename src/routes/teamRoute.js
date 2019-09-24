@@ -15,4 +15,10 @@ router.delete('/team/:teamId', Authentication.verifyToken, TeamController.remove
 // edit a team route
 router.put('/team/:teamId', Authentication.verifyToken, validate(addTeamSchema), TeamController.editTeam);
 
+// view a team route
+router.get('/team/:teamId', Authentication.verifyToken, TeamController.viewATeam);
+
+// view all team route
+router.get('/teams', Authentication.verifyToken, TeamController.viewAllTeam);
+
 export default router;
