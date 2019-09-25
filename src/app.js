@@ -7,6 +7,7 @@ import messages from './utils/messages';
 import connect from './database/db';
 import user from './routes/userRoute';
 import team from './routes/teamRoute';
+import fixture from './routes/fixtureRoute';
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(trimmer);
 // api endpoints
 app.use('/api/v1/user', user);
 app.use('/api/v1', team);
+app.use('/api/v1', fixture);
 
 // Home page route
 app.get('/', (req, res) => {
@@ -52,7 +54,7 @@ app.use((req, res) => {
 });
 
 const server = http.createServer(app);
-const port = process.env.PORT || 5500;
+const port = process.env.PORT || 5000;
 const listen = messages.listenToServer;
 
 if (process.env.NODE_ENV !== 'test') {
