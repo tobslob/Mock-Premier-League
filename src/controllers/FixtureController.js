@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import moment from 'moment';
 import FixtureModel from '../models/fixtureModel';
 import response from '../utils/response';
 import messages from '../utils/messages';
@@ -99,6 +100,60 @@ class FixtureController {
         : response(res, 400, 'error', {
           message: messages.error
         });
+    }
+  }
+
+  /**
+     *  admin can edit a fixture method
+     * @param {object} req - response object
+     * @param {object} res - response object
+     * @param {number} status - http status code
+     * @param {string} statusMessage - http status message
+     * @param {object} data - response data
+     *
+     * @returns {object} returns response
+     *
+     * @example
+     *
+     */
+  static async editFixture(req, res) {
+    try {
+      const { body, params } = req;
+      const {
+        teamA, teamB, matchInfo, status
+      } = body;
+      const { fixtureId } = params;
+      const fixture = await FixtureModel.findByIdAndUpdate(
+        { _id: fixtureId },
+        {
+          $set: {
+            teamA,
+            teamB,
+            matchInfo,
+            status,
+            updatedAt: moment(Date.now()).format('LLLL')
+          }
+        },
+        { useFindAndModify: false }
+      )
+        .exec();
+      if (!req.user.isAdmin) {
+        return response(res, 400, 'error', {
+          message: messages.unAuthorizedRoute
+        });
+      }
+      if (!fixture) {
+        return response(res, 404, 'error', {
+          message: messages.notfound
+        });
+      }
+      return response(res, 200, 'success', {
+        message: messages.updateMessage
+      });
+    } catch (error) {
+      return response(res, 400, 'error', {
+        message: messages.error
+      });
     }
   }
 }
