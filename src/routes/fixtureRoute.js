@@ -16,4 +16,10 @@ router.delete('/fixture/:fixtureId', Authentication.verifyToken, FixtureControll
 // edit a fixture route
 router.put('/fixture/:fixtureId', Authentication.verifyToken, validate(addFixtureSchema), checkIfTeamIsPresentInDatabase, FixtureController.editFixture);
 
+// view a fixture route
+router.get('/fixture/:fixtureId', Authentication.verifyToken, FixtureController.viewAFixture);
+
+// view all fixture route
+router.get('/fixtures', Authentication.verifyToken, FixtureController.viewAllFixture);
+
 export default router;

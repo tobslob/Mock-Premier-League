@@ -122,6 +122,11 @@ class FixtureController {
       const {
         teamA, teamB, matchInfo, status
       } = body;
+      if (!req.user.isAdmin) {
+        return response(res, 400, 'error', {
+          message: messages.unAuthorizedRoute
+        });
+      }
       const { fixtureId } = params;
       const fixture = await FixtureModel.findByIdAndUpdate(
         { _id: fixtureId },
@@ -137,11 +142,6 @@ class FixtureController {
         { useFindAndModify: false }
       )
         .exec();
-      if (!req.user.isAdmin) {
-        return response(res, 400, 'error', {
-          message: messages.unAuthorizedRoute
-        });
-      }
       if (!fixture) {
         return response(res, 404, 'error', {
           message: messages.notfound
@@ -152,6 +152,80 @@ class FixtureController {
       });
     } catch (error) {
       return response(res, 400, 'error', {
+        message: messages.error
+      });
+    }
+  }
+
+  /**
+       *  admin can view a fixture method
+       * @param {object} req - response object
+       * @param {object} res - response object
+       * @param {number} status - http status code
+       * @param {string} statusMessage - http status message
+       * @param {object} data - response data
+       *
+       * @returns {object} returns response
+       *
+       * @example
+       *
+       */
+  static async viewAFixture(req, res) {
+    const { fixtureId } = req.params;
+    try {
+      if (!req.user.isAdmin) {
+        return response(res, 400, 'error', {
+          message: messages.unAuthorizedRoute
+        });
+      }
+      const fixture = await FixtureModel.findById({ _id: fixtureId })
+        .exec();
+      if (!fixture) {
+        return response(res, 404, 'error', {
+          message: messages.notfound
+        });
+      }
+      return response(res, 200, 'success', {
+        fixture
+      });
+    } catch (error) {
+      error.name === 'CastError'
+        ? response(res, 400, 'error', {
+          message: messages.castError
+        })
+        : response(res, 400, 'error', {
+          message: messages.error
+        });
+    }
+  }
+
+  /**
+           *  Admin can view all fixture method
+           * @param {object} req - response object
+           * @param {object} res - response object
+           * @param {number} status - http status code
+           * @param {string} statusMessage - http status message
+           * @param {object} data - response data
+           *
+           * @returns {object} returns response
+           *
+           * @example
+           *
+           */
+  static async viewAllFixture(req, res) {
+    try {
+      if (!req.user.isAdmin) {
+        return response(res, 400, 'error', {
+          message: messages.unAuthorizedRoute
+        });
+      }
+      const fixture = await FixtureModel.find().exec();
+      return response(res, 200, 'success', {
+        fixture,
+        count: fixture.length
+      });
+    } catch (error) {
+      response(res, 400, 'error', {
         message: messages.error
       });
     }
