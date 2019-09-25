@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import moment from 'moment';
 import TeamModel from '../models/teamModel';
 import response from '../utils/response';
 import messages from '../utils/messages';
@@ -115,7 +116,7 @@ class TeamController {
             teamName,
             teamMembers,
             description,
-            updatedAt: Date.now()
+            updatedAt: moment(Date.now()).format('LLLL')
           }
         },
         { useFindAndModify: false }
@@ -162,7 +163,7 @@ class TeamController {
     const { teamId } = req.params;
     try {
       const team = await TeamModel.findById({ _id: teamId })
-        .select('_id teamName teamMembers description')
+        .select('_id teamName teamMembers description createdAt updatedAt')
         .exec();
       if (!team) {
         return response(res, 404, 'error', {
@@ -199,7 +200,7 @@ class TeamController {
   static async viewAllTeam(req, res) {
     try {
       const teams = await TeamModel.find()
-        .select('_id teamName teamMembers description')
+        .select('_id teamName teamMembers description createdAt updatedAt')
         .exec();
       return response(res, 200, 'success', {
         teams,
