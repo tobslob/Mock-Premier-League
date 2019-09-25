@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import moment from 'moment';
 import FixtureModel from '../models/fixtureModel';
 import response from '../utils/response';
 import messages from '../utils/messages';
@@ -129,7 +130,8 @@ class FixtureController {
             teamA,
             teamB,
             matchInfo,
-            status
+            status,
+            updatedAt: moment(Date.now()).format('LLLL')
           }
         },
         { useFindAndModify: false }

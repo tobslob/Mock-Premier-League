@@ -31,8 +31,8 @@ const fixtureSchema = mongoose.Schema({
         'St James Park', "St Mary's Stadium", 'Vicarage Road', 'Molineux Stadium']
     }
   },
-  createdAt: { type: Date, default: moment(new Date()).LLLL },
-  updatedAt: { type: Date, default: moment(new Date()).LLLL }
+  createdAt: { type: Date, default: moment(Date.now()).format('LLLL') },
+  updatedAt: { type: Date, default: moment(Date.now()).format('LLLL') },
 });
 
 export default mongoose.model('FixtureModel', fixtureSchema);
