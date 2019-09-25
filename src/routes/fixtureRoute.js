@@ -22,4 +22,10 @@ router.get('/fixture/:fixtureId', Authentication.verifyToken, FixtureController.
 // view all fixture route
 router.get('/fixtures', Authentication.verifyToken, FixtureController.viewAllFixture);
 
+// view completed fixtures route
+router.get('/fixtures/completed', Authentication.verifyToken, FixtureController.viewCompletedFixture);
+
+// view all pending fixture route
+router.get('/fixtures/pending', Authentication.verifyToken, FixtureController.viewPendingFixture);
+
 export default router;

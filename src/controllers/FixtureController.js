@@ -230,6 +230,62 @@ class FixtureController {
       });
     }
   }
+
+  /**
+       *  User can view all completed fixture method
+       * @param {object} req - response object
+       * @param {object} res - response object
+       * @param {number} status - http status code
+       * @param {string} statusMessage - http status message
+       * @param {object} data - response data
+       *
+       * @returns {object} returns response
+       *
+       * @example
+       *
+       */
+  static async viewCompletedFixture(req, res) {
+    try {
+      const fixture = await FixtureModel.find({ status: 'completed' })
+        .exec();
+      return response(res, 200, 'success', {
+        fixture,
+        count: fixture.length
+      });
+    } catch (error) {
+      return response(res, 400, 'error', {
+        message: messages.error
+      });
+    }
+  }
+
+  /**
+       *  User can view all pending fixture method
+       * @param {object} req - response object
+       * @param {object} res - response object
+       * @param {number} status - http status code
+       * @param {string} statusMessage - http status message
+       * @param {object} data - response data
+       *
+       * @returns {object} returns response
+       *
+       * @example
+       *
+       */
+  static async viewPendingFixture(req, res) {
+    try {
+      const fixture = await FixtureModel.find({ status: 'pending' })
+        .exec();
+      return response(res, 200, 'success', {
+        fixture,
+        count: fixture.length
+      });
+    } catch (error) {
+      return response(res, 400, 'error', {
+        message: messages.error
+      });
+    }
+  }
 }
 
 export default FixtureController;
