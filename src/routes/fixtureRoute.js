@@ -10,7 +10,10 @@ const router = express.Router();
 // create a fixture route
 router.post('/fixture', Authentication.verifyToken, validate(addFixtureSchema), checkIfTeamIsPresentInDatabase, FixtureController.addFixture);
 
-// create a fixture route
+// delete a fixture route
 router.delete('/fixture/:fixtureId', Authentication.verifyToken, FixtureController.removeFixture);
+
+// edit a fixture route
+router.put('/fixture/:fixtureId', Authentication.verifyToken, validate(addFixtureSchema), checkIfTeamIsPresentInDatabase, FixtureController.editFixture);
 
 export default router;
