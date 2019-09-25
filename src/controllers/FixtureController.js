@@ -60,6 +60,47 @@ class FixtureController {
       });
     }
   }
+
+  /**
+       *  admin can remove fixture
+       * @param {object} req - response object
+       * @param {object} res - response object
+       * @param {number} status - http status code
+       * @param {string} statusMessage - http status message
+       * @param {object} data - response data
+       *
+       * @returns {object} returns response
+       *
+       * @example
+       *
+       */
+  static async removeFixture(req, res) {
+    const { fixtureId } = req.params;
+    try {
+      if (!req.user.isAdmin) {
+        return response(res, 404, 'error', {
+          message: messages.unAuthorizedRoute
+        });
+      }
+      const fixture = await FixtureModel.findByIdAndDelete({ _id: fixtureId }).exec();
+      if (!fixture) {
+        return response(res, 404, 'error', {
+          message: messages.notfound
+        });
+      }
+      return response(res, 200, 'success', {
+        message: messages.deleteMessage
+      });
+    } catch (error) {
+      error.name === 'CastError'
+        ? response(res, 400, 'error', {
+          message: messages.castError
+        })
+        : response(res, 400, 'error', {
+          message: messages.error
+        });
+    }
+  }
 }
 
 export default FixtureController;
