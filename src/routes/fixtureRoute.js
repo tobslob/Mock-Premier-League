@@ -28,4 +28,7 @@ router.get('/fixtures/completed', Authentication.verifyToken, FixtureController.
 // view all pending fixture route
 router.get('/fixtures/pending', Authentication.verifyToken, FixtureController.viewPendingFixture);
 
+// search fixture robustly
+router.post('/fxtures/search', FixtureController.searchFixture);
+
 export default router;

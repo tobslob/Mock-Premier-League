@@ -292,6 +292,49 @@ class FixtureController {
       });
     }
   }
+
+  /**
+     *  user can search fixture method
+     * @param {object} req - response object
+     * @param {object} res - response object
+     * @param {object} next - response object
+     * @param {number} status - http status code
+     * @param {string} statusMessage - http status message
+     * @param {object} data - response data
+     *
+     * @returns {object} returns response
+     *
+     * @example
+     *
+     */
+  static async searchFixture(req, res) {
+    const {
+      name, date, status
+    } = req.body;
+    let { stadium } = req.body;
+    try {
+      if (name || date || stadium || status) {
+        stadium = new RegExp(`^${stadium}$`, 'i');
+        const fixture = await FixtureModel.find({
+          $or: [
+            { status },
+            { 'teamA.0.name': new RegExp(`^${name}$`, 'i') },
+            { 'teamB.0.name': new RegExp(`^${name}$`, 'i') },
+            { matchInfo: { $elemMatch: { date, stadium } } }
+          ]
+        })
+          .exec();
+        return response(res, 200, 'success', {
+          fixture,
+          count: fixture.length
+        });
+      }
+    } catch (error) {
+      return response(res, 400, 'error', {
+        message: messages.error
+      });
+    }
+  }
 }
 
 export default FixtureController;

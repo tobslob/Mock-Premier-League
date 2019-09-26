@@ -31,6 +31,8 @@ API that serves the latest scores of fixtures of matches in a “Mock Premier Le
 - POSTMAN
 - Jest
 - Express
+- Travis
+- Codeclimate
 
 ## Requirements and Installation
 
@@ -90,6 +92,10 @@ npm test
 `- GET /api/v1/fixtures/completed User can view all completed fixtures`
 
 `- GET /api/v1/fixtures/pending User can view all pending fixtures`
+
+`- POST /api/v1/fxtures/search User can search fixture robustly`
+
+`- POST /api/v1/teams/search User can search team robustly`
 
 ## API
 

@@ -21,4 +21,7 @@ router.get('/team/:teamId', Authentication.verifyToken, TeamController.viewATeam
 // view all team route
 router.get('/teams', Authentication.verifyToken, TeamController.viewAllTeam);
 
+// search team robustly
+router.post('/teams/search', TeamController.searchTeam);
+
 export default router;
