@@ -1,6 +1,6 @@
 const createFixture = {
   teamA: [{ name: 'Arsenal', score: 0 }],
-  teamB: [{ name: 'Aston Villa', score: 0 }],
+  teamB: [{ name: 'Southampton', score: 0 }],
   matchInfo: [{ date: '2019-11-26T16:24:32.674+00:00' }, { stadium: 'Craven Cottage' }]
 };
 
