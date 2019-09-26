@@ -39,6 +39,8 @@ API that serves the latest scores of fixtures of matches in a “Mock Premier Le
 To install and run this project you would need to have listed stack installed:
 
 - Node.js
+- Docker
+- Redis
 
 - To run:
 
@@ -48,6 +50,20 @@ cd Mock-Premier-League
 npm install
 npm run start:dev
 ```
+
+## Login as an admin or create a user account
+
+```sh
+- email `admin@gmail.com`
+- password `Kazeem27$`
+```
+
+## Docker Development Setup
+
+- Install Docker
+- Change to application root directory
+- Build a docker image with the following command `docker build -t mock-premier-league .`
+- Run `docker-compose up`
 
 ## Testing
 

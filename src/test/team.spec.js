@@ -2,7 +2,9 @@
 import request from 'supertest';
 import app from '../app';
 import messages from '../utils/messages';
-import { createTeam, adminLogin, login } from './models/teamModel';
+import {
+  createTeam, adminLogin, login, searchTeam
+} from './models/teamModel';
 
 // const baseUrl = '/api/v1';
 const teamUrl = '/api/v1/team';
@@ -164,6 +166,13 @@ describe('Team js', () => {
     expect(res.status).toEqual(500);
     expect(res.body.status).toEqual('error');
     expect(res.body.data.message).toEqual(messages.serverError);
+    done();
+  }, 30000);
+
+  it('should search fixture robustly', async (done) => {
+    const res = await request(app).post(`${teamsUrl}/search`).send(searchTeam);
+    expect(res.status).toEqual(200);
+    expect(res.body.status).toEqual('success');
     done();
   }, 30000);
 });

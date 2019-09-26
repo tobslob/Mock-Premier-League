@@ -45,7 +45,9 @@ class FixtureController {
         });
       }
       const results = await FixtureModel.find({ teamA, teamB, matchInfo });
-      const itsPendingFixture = results.filter(result => result.status === 'pending');
+      const itsPendingFixture = results.filter(
+        result => result.status === 'pending'
+      );
       if (itsPendingFixture.length >= 1) {
         return response(res, 409, 'error', {
           message: messages.existingFixture
@@ -65,18 +67,18 @@ class FixtureController {
   }
 
   /**
-       *  admin can remove fixture
-       * @param {object} req - response object
-       * @param {object} res - response object
-       * @param {number} status - http status code
-       * @param {string} statusMessage - http status message
-       * @param {object} data - response data
-       *
-       * @returns {object} returns response
-       *
-       * @example
-       *
-       */
+   *  admin can remove fixture
+   * @param {object} req - response object
+   * @param {object} res - response object
+   * @param {number} status - http status code
+   * @param {string} statusMessage - http status message
+   * @param {object} data - response data
+   *
+   * @returns {object} returns response
+   *
+   * @example
+   *
+   */
   static async removeFixture(req, res) {
     const { fixtureId } = req.params;
     try {
@@ -85,7 +87,9 @@ class FixtureController {
           message: messages.unAuthorizedRoute
         });
       }
-      const fixture = await FixtureModel.findByIdAndDelete({ _id: fixtureId }).exec();
+      const fixture = await FixtureModel.findByIdAndDelete({
+        _id: fixtureId
+      }).exec();
       if (!fixture) {
         return response(res, 404, 'error', {
           message: messages.notfound
@@ -106,18 +110,18 @@ class FixtureController {
   }
 
   /**
-     *  admin can edit a fixture method
-     * @param {object} req - response object
-     * @param {object} res - response object
-     * @param {number} status - http status code
-     * @param {string} statusMessage - http status message
-     * @param {object} data - response data
-     *
-     * @returns {object} returns response
-     *
-     * @example
-     *
-     */
+   *  admin can edit a fixture method
+   * @param {object} req - response object
+   * @param {object} res - response object
+   * @param {number} status - http status code
+   * @param {string} statusMessage - http status message
+   * @param {object} data - response data
+   *
+   * @returns {object} returns response
+   *
+   * @example
+   *
+   */
   static async editFixture(req, res) {
     try {
       const { body, params } = req;
@@ -142,8 +146,7 @@ class FixtureController {
           }
         },
         { useFindAndModify: false }
-      )
-        .exec();
+      ).exec();
       if (!fixture) {
         return response(res, 404, 'error', {
           message: messages.notfound
@@ -164,18 +167,18 @@ class FixtureController {
   }
 
   /**
-       *  admin can view a fixture method
-       * @param {object} req - response object
-       * @param {object} res - response object
-       * @param {number} status - http status code
-       * @param {string} statusMessage - http status message
-       * @param {object} data - response data
-       *
-       * @returns {object} returns response
-       *
-       * @example
-       *
-       */
+   *  admin can view a fixture method
+   * @param {object} req - response object
+   * @param {object} res - response object
+   * @param {number} status - http status code
+   * @param {string} statusMessage - http status message
+   * @param {object} data - response data
+   *
+   * @returns {object} returns response
+   *
+   * @example
+   *
+   */
   static async viewAFixture(req, res) {
     const { fixtureId } = req.params;
     try {
@@ -184,8 +187,7 @@ class FixtureController {
           message: messages.unAuthorizedRoute
         });
       }
-      const fixture = await FixtureModel.findById({ _id: fixtureId })
-        .exec();
+      const fixture = await FixtureModel.findById({ _id: fixtureId }).exec();
       if (!fixture) {
         return response(res, 404, 'error', {
           message: messages.notfound
@@ -206,26 +208,33 @@ class FixtureController {
   }
 
   /**
-           *  Admin can view all fixture method
-           * @param {object} req - response object
-           * @param {object} res - response object
-           * @param {number} status - http status code
-           * @param {string} statusMessage - http status message
-           * @param {object} data - response data
-           *
-           * @returns {object} returns response
-           *
-           * @example
-           *
-           */
+   *  Admin can view all fixture method
+   * @param {object} req - response object
+   * @param {object} res - response object
+   * @param {number} status - http status code
+   * @param {string} statusMessage - http status message
+   * @param {object} data - response data
+   *
+   * @returns {object} returns response
+   *
+   * @example
+   *
+   */
   static async viewAllFixture(req, res) {
     try {
+      let { page, perPage } = req.query;
+      perPage = perPage ? parseInt(perPage, 10) : 10;
+      page = page ? parseInt(page, 10) : 1;
       if (!req.user.isAdmin) {
         return response(res, 403, 'error', {
           message: messages.unAuthorizedRoute
         });
       }
-      const fixture = await FixtureModel.find().exec();
+      const fixture = await FixtureModel.find()
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .sort({ createdAt: -1 })
+        .exec();
       return response(res, 200, 'success', {
         fixture,
         count: fixture.length
@@ -238,21 +247,27 @@ class FixtureController {
   }
 
   /**
-       *  User can view all completed fixture method
-       * @param {object} req - response object
-       * @param {object} res - response object
-       * @param {number} status - http status code
-       * @param {string} statusMessage - http status message
-       * @param {object} data - response data
-       *
-       * @returns {object} returns response
-       *
-       * @example
-       *
-       */
+   *  User can view all completed fixture method
+   * @param {object} req - response object
+   * @param {object} res - response object
+   * @param {number} status - http status code
+   * @param {string} statusMessage - http status message
+   * @param {object} data - response data
+   *
+   * @returns {object} returns response
+   *
+   * @example
+   *
+   */
   static async viewCompletedFixture(req, res) {
     try {
+      let { page, perPage } = req.query;
+      perPage = perPage ? parseInt(perPage, 10) : 10;
+      page = page ? parseInt(page, 10) : 1;
       const fixture = await FixtureModel.find({ status: 'completed' })
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .sort({ createdAt: -1 })
         .exec();
       return response(res, 200, 'success', {
         fixture,
@@ -266,21 +281,27 @@ class FixtureController {
   }
 
   /**
-       *  User can view all pending fixture method
-       * @param {object} req - response object
-       * @param {object} res - response object
-       * @param {number} status - http status code
-       * @param {string} statusMessage - http status message
-       * @param {object} data - response data
-       *
-       * @returns {object} returns response
-       *
-       * @example
-       *
-       */
+   *  User can view all pending fixture method
+   * @param {object} req - response object
+   * @param {object} res - response object
+   * @param {number} status - http status code
+   * @param {string} statusMessage - http status message
+   * @param {object} data - response data
+   *
+   * @returns {object} returns response
+   *
+   * @example
+   *
+   */
   static async viewPendingFixture(req, res) {
     try {
+      let { page, perPage } = req.query;
+      perPage = perPage ? parseInt(perPage, 10) : 10;
+      page = page ? parseInt(page, 10) : 1;
       const fixture = await FixtureModel.find({ status: 'pending' })
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .sort({ createdAt: -1 })
         .exec();
       return response(res, 200, 'success', {
         fixture,
@@ -294,25 +315,27 @@ class FixtureController {
   }
 
   /**
-     *  user can search fixture method
-     * @param {object} req - response object
-     * @param {object} res - response object
-     * @param {object} next - response object
-     * @param {number} status - http status code
-     * @param {string} statusMessage - http status message
-     * @param {object} data - response data
-     *
-     * @returns {object} returns response
-     *
-     * @example
-     *
-     */
+   *  user can search fixture method
+   * @param {object} req - response object
+   * @param {object} res - response object
+   * @param {object} next - response object
+   * @param {number} status - http status code
+   * @param {string} statusMessage - http status message
+   * @param {object} data - response data
+   *
+   * @returns {object} returns response
+   *
+   * @example
+   *
+   */
   static async searchFixture(req, res) {
-    const {
-      name, date, status
-    } = req.body;
-    let { stadium } = req.body;
     try {
+      const { name, date, status } = req.body;
+      const { body, query } = req;
+      let { page, perPage } = query;
+      perPage = perPage ? parseInt(perPage, 10) : 10;
+      page = page ? parseInt(page, 10) : 1;
+      let { stadium } = body;
       if (name || date || stadium || status) {
         stadium = new RegExp(`^${stadium}$`, 'i');
         const fixture = await FixtureModel.find({
@@ -323,6 +346,9 @@ class FixtureController {
             { matchInfo: { $elemMatch: { date, stadium } } }
           ]
         })
+          .skip((page - 1) * perPage)
+          .limit(perPage)
+          .sort({ createdAt: -1 })
           .exec();
         return response(res, 200, 'success', {
           fixture,

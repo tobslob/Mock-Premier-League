@@ -188,13 +188,19 @@ class UserController {
    */
   static async getAllUser(req, res) {
     try {
+      let { page, perPage } = req.query;
       if (!req.user.isAdmin) {
         return response(res, 403, 'error', {
           message: messages.unAuthorizedRoute
         });
       }
+      perPage = perPage ? parseInt(perPage, 10) : 10;
+      page = page ? parseInt(page, 10) : 1;
       const users = await UserModel.find()
         .select('email firstName lastName')
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .sort({ createdAt: -1 })
         .exec();
       return response(res, 200, 'success', {
         users,

@@ -3,7 +3,7 @@ import request from 'supertest';
 import app from '../app';
 import messages from '../utils/messages';
 import {
-  createFixture, adminLogin, login, sameTeam, validFixture
+  createFixture, adminLogin, login, sameTeam, validFixture, searchFixture
 } from './models/fixtureModel';
 
 // const baseUrl = '/api/v1';
@@ -210,6 +210,13 @@ describe('Fixture js', () => {
     expect(res.status).toEqual(404);
     expect(res.body.status).toEqual('error');
     expect(res.body.data.message).toEqual(messages.notfound);
+    done();
+  }, 30000);
+
+  it('should search fixture robustly', async (done) => {
+    const res = await request(app).post(`${fixturesUrl}/search`).send(searchFixture);
+    expect(res.status).toEqual(200);
+    expect(res.body.status).toEqual('success');
     done();
   }, 30000);
 });
