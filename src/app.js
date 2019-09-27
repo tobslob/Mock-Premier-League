@@ -3,6 +3,8 @@ import morgan from 'morgan';
 import express from 'express';
 import trimmer from 'trim-request-body';
 import bodyparser from 'body-parser';
+import redis from 'redis';
+import responseTime from 'response-time';
 import messages from './utils/messages';
 import connect from './database/db';
 import user from './routes/userRoute';
@@ -10,6 +12,19 @@ import team from './routes/teamRoute';
 import fixture from './routes/fixtureRoute';
 
 const app = express();
+
+if (process.env.NODE_ENV !== 'test') {
+// create and connect redis client to local instance.
+  const client = redis.createClient();
+
+  app.use(responseTime());
+
+  // Print redis errors to the console
+  client.on('error', (err, res) => res.status(400).json({
+    status: 'error',
+    data: { message: messages.runtimeErr }
+  }));
+}
 
 // connect to database
 connect();

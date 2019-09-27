@@ -21,7 +21,8 @@ const messages = {
   existingFixture: 'Same fixture exist',
   sameTeam: "teamA and teamB can't be the same",
   teamNotFound: 'one of the team is not available at the moment',
-  user: 'User created successfully'
+  user: 'User created successfully',
+  runtimeErr: 'Run time error occur'
 };
 
 export default messages;
