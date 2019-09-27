@@ -79,7 +79,7 @@ class TeamController {
           message: messages.notfound
         });
       }
-      return response(res, 200, 'error', {
+      return response(res, 200, 'success', {
         message: messages.deleteMessage
       });
     } catch (error) {
