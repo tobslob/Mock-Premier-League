@@ -20,7 +20,8 @@ const messages = {
   updateMessage: 'Successfully updated',
   existingFixture: 'Same fixture exist',
   sameTeam: "teamA and teamB can't be the same",
-  teamNotFound: 'one of the team is not available at the moment'
+  teamNotFound: 'one of the team is not available at the moment',
+  user: 'User created successfully'
 };
 
 export default messages;

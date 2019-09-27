@@ -1,17 +1,36 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=4b4b5f6896320cef463a368f9f0e77cd127a17be239c1ad964a8783d741b14a6
+
+sudo: false
+
 language: node_js
+
 node_js:
-  - "stable"
-notifications:
-  email: false
+  - "node"
+
 services:
-  - postgresql
-cache:
-  directories:
-    - node_modules
+  - mongodb
+
 before_script:
+  - sleep 15
+  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+install:
+  # install deps
   - npm install
-  - psql -c 'create database travis_ci_test;' -U postgres
-script: 
-  - npm run test
+
+script:
+  - npm test
+  - npm build
+
 after_success:
-  - npm run coveralls
+  - npm run coverage
+  - npm install codeclimate-test-reporter
+  - codeclimate-test-reporter < coverage/lcov.info
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

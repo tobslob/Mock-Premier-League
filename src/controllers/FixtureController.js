@@ -3,7 +3,7 @@ import moment from 'moment';
 import FixtureModel from '../models/fixtureModel';
 import response from '../utils/response';
 import messages from '../utils/messages';
-import compareTwoArrays from '../helper.js/compareTwoArrays';
+import compareTwoTeams from '../helper.js/compareTwoTeams';
 
 /** *
  * @exports {class} FixtureController
@@ -25,8 +25,9 @@ class FixtureController {
   static async addFixture(req, res) {
     const { teamA, teamB, matchInfo } = req.body;
     try {
+      // console.log('I am executed');
       if (!req.user.isAdmin) {
-        return response(res, 404, 'error', {
+        return response(res, 403, 'error', {
           message: messages.unAuthorizedRoute
         });
       }
@@ -37,14 +38,15 @@ class FixtureController {
         matchInfo
       });
 
-      const compare = await compareTwoArrays(teamA, teamB);
+      const compare = await compareTwoTeams(teamA, teamB);
       if (compare) {
         return response(res, 409, 'error', {
           message: messages.sameTeam
         });
       }
-      const result = await FixtureModel.find({ teamA, teamB, matchInfo });
-      if (result.length >= 1) {
+      const results = await FixtureModel.find({ teamA, teamB, matchInfo });
+      const itsPendingFixture = results.filter(result => result.status === 'pending');
+      if (itsPendingFixture.length >= 1) {
         return response(res, 409, 'error', {
           message: messages.existingFixture
         });
@@ -79,7 +81,7 @@ class FixtureController {
     const { fixtureId } = req.params;
     try {
       if (!req.user.isAdmin) {
-        return response(res, 404, 'error', {
+        return response(res, 403, 'error', {
           message: messages.unAuthorizedRoute
         });
       }
@@ -123,7 +125,7 @@ class FixtureController {
         teamA, teamB, matchInfo, status
       } = body;
       if (!req.user.isAdmin) {
-        return response(res, 400, 'error', {
+        return response(res, 403, 'error', {
           message: messages.unAuthorizedRoute
         });
       }
@@ -151,9 +153,13 @@ class FixtureController {
         message: messages.updateMessage
       });
     } catch (error) {
-      return response(res, 400, 'error', {
-        message: messages.error
-      });
+      error.name === 'CastError'
+        ? response(res, 400, 'error', {
+          message: messages.castError
+        })
+        : response(res, 400, 'error', {
+          message: messages.error
+        });
     }
   }
 
@@ -174,7 +180,7 @@ class FixtureController {
     const { fixtureId } = req.params;
     try {
       if (!req.user.isAdmin) {
-        return response(res, 400, 'error', {
+        return response(res, 403, 'error', {
           message: messages.unAuthorizedRoute
         });
       }
@@ -215,7 +221,7 @@ class FixtureController {
   static async viewAllFixture(req, res) {
     try {
       if (!req.user.isAdmin) {
-        return response(res, 400, 'error', {
+        return response(res, 403, 'error', {
           message: messages.unAuthorizedRoute
         });
       }

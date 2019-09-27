@@ -72,7 +72,7 @@ class UserController {
       }
       // compare user provided password against db
       if (!Helper.comparePassword(user.password, password)) {
-        return response(res, 404, 'error', {
+        return response(res, 400, 'error', {
           message: messages.IncorrectLoginDetails
         });
       }

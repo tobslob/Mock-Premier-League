@@ -6,10 +6,13 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production babel-node src/app.js",
     "start:dev": "cross-env NODE_ENV=production nodemon --exec babel-node src/app.js",
-    "test": "set DEBUG=http:* && cross-env NODE_ENV=test jest  --coverage --testPathPattern='.src/test/.*\\.spec\\.js$' --detectOpenHandles --runInBand --forceExit",
+    "test": "set DEBUG=http:* && cross-env NODE_ENV=test jest  --coverage --testPathPattern='.src/test/.*\\.spec\\.js$' --detectOpenHandles --verbose --runInBand --forceExit",
     "lint": "./node_modules/.bin/eslint",
     "lint:fix": "./node_modules/.bin/eslint --fix",
-    "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test"
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",
