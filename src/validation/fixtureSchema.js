@@ -1,6 +1,6 @@
 import Joi from '@hapi/joi';
 import JoiValidator from './JoiValidator';
-import { name } from './teamSchema';
+import name from './validateTeamName';
 
 const validTeam = JoiValidator.validateArray().items({
   name,

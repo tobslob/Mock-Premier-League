@@ -19,6 +19,11 @@ if (process.env.NODE_ENV !== 'test') {
 
   app.use(responseTime());
 
+  client.on('connect', () => {
+    // eslint-disable-next-line no-console
+    console.log('Redis client connected');
+  });
+
   // Print redis errors to the console
   client.on('error', (err) => {
     // eslint-disable-next-line no-console
