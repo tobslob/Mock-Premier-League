@@ -1,10 +1,6 @@
 import Joi from '@hapi/joi';
 import JoiValidator from './JoiValidator';
-
-const name = JoiValidator.validateString().valid(
-  'AFC Bournemouth', 'Arsenal', 'Aston Villa', 'Brighton & Hove Albion', 'Burnley', 'Chelsea', 'Crystal Palace', 'Everton', 'Leicester City', 'Liverpool', 'Manchester City', 'Manchester United',
-  'Newcastle United', ' Norwich City', 'Sheffield United', 'Southampton', 'Tottenham Hotspur', 'Watford', 'West Ham United', 'Wolverhampton Wanderers'
-).required();
+import name from './validateTeamName';
 
 const addTeamSchema = Joi.object({
   teamName: name,
@@ -17,4 +13,4 @@ const addTeamSchema = Joi.object({
   description: JoiValidator.validateString()
 });
 
-export { addTeamSchema, name };
+export default addTeamSchema;

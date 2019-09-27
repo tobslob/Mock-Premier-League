@@ -96,7 +96,7 @@ describe('Team js', () => {
   }, 30000);
 
   it('should not edit a team if not admin token', async (done) => {
-    const res = await request(app).put(`${teamUrl}/${id}`).set('authorization', `Bearer ${userToken}`);
+    const res = await request(app).put(`${teamUrl}/${id}`).send(createTeam).set('authorization', `Bearer ${userToken}`);
     expect(res.status).toEqual(403);
     expect(res.body.status).toEqual('error');
     expect(res.body.data.message).toEqual(messages.unAuthorizedRoute);
@@ -104,7 +104,7 @@ describe('Team js', () => {
   }, 30000);
 
   it('should not edit a team if id is invalid', async (done) => {
-    const res = await request(app).put(`${teamUrl}/${invalidId}`).set('authorization', `Bearer ${adminToken}`);
+    const res = await request(app).put(`${teamUrl}/${invalidId}`).send(createTeam).set('authorization', `Bearer ${adminToken}`);
     expect(res.status).toEqual(400);
     expect(res.body.status).toEqual('error');
     expect(res.body.data.message).toEqual(messages.castError);

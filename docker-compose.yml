@@ -15,7 +15,7 @@ services:
       - .env
     image: redis
     environment:
-      - REDIS_URL=${REDIS_URL}
+      - REDIS_URL=${REDIS_HOST}
     networks:
       - webnet
   mongo:

@@ -4,6 +4,7 @@ import express from 'express';
 import trimmer from 'trim-request-body';
 import bodyparser from 'body-parser';
 import redis from 'redis';
+import session from 'express-session';
 import responseTime from 'response-time';
 import messages from './utils/messages';
 import connect from './database/db';
@@ -13,11 +14,26 @@ import fixture from './routes/fixtureRoute';
 
 const app = express();
 
+const RedisStore = require('connect-redis')(session);
+
 if (process.env.NODE_ENV !== 'test') {
 // create and connect redis client to local instance.
   const client = redis.createClient();
 
+  app.use(
+    session({
+      store: new RedisStore({ client }),
+      secret: process.env.SECRET_KEY,
+      resave: false
+    })
+  );
+
   app.use(responseTime());
+
+  client.on('connect', () => {
+    // eslint-disable-next-line no-console
+    console.log('Redis client connected');
+  });
 
   // Print redis errors to the console
   client.on('error', (err) => {
