@@ -20,10 +20,10 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(responseTime());
 
   // Print redis errors to the console
-  client.on('error', (err, res) => res.status(400).json({
-    status: 'error',
-    data: { message: messages.runtimeErr }
-  }));
+  client.on('error', (err) => {
+    // eslint-disable-next-line no-console
+    console.log(`Error ${err}`);
+  });
 }
 
 // connect to database

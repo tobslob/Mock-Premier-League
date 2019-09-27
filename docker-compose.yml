@@ -8,6 +8,16 @@ services:
       - "5000:5000"
     links:
       - mongo
+    networks:
+      - webnet
+  redis:
+    env_file:
+      - .env
+    image: redis
+    environment:
+      - REDIS_URL=${REDIS_URL}
+    networks:
+      - webnet
   mongo:
     container_name: mongo
     image: mongo
@@ -15,3 +25,7 @@ services:
       - ./data:/data/db
     ports:
       - "27017:27017"
+    networks:
+      - webnet
+networks:
+  webnet:
