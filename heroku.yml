@@ -2,8 +2,5 @@ build:
   docker:
     web: Dockerfile
 run:
-  web: docker-compose up --build
-setup:
-  addons:
-  - plan: create mongolab
-    as: DATABASE
+  web: docker-compose up
+
