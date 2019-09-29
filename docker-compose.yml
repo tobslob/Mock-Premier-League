@@ -5,7 +5,7 @@ services:
     restart: always
     build: .
     ports:
-      - "5000:5000"
+      - "8080:8080"
     links:
       - mongo
     networks:
@@ -15,7 +15,7 @@ services:
       - .env
     image: redis
     environment:
-      - REDIS_URL=${REDIS_HOST}
+      - REDIS_URL=${REDIS_URL}
     networks:
       - webnet
   mongo:

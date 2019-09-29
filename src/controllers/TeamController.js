@@ -212,6 +212,48 @@ class TeamController {
       });
     }
   }
+
+  /**
+     *  user can search team method
+     * @param {object} req - response object
+     * @param {object} res - response object
+     * @param {object} next - response object
+     * @param {number} status - http status code
+     * @param {string} statusMessage - http status message
+     * @param {object} data - response data
+     *
+     * @returns {object} returns response
+     *
+     * @example
+     *
+     */
+  static async searchTeam(req, res) {
+    const {
+      name, role, description, memberName
+    } = req.body;
+
+    try {
+      if (name || role || description || memberName) {
+        const team = await TeamModel.find({
+          $or: [
+            { teamName: new RegExp(`^${name}$`, 'i') },
+            { description: new RegExp(`^${description}$`, 'i') },
+            { 'teamMembers.0.name': new RegExp(`^${name}$`, 'i') },
+            { 'teamMembers.0.role': new RegExp(`^${role}$`, 'i') }
+          ]
+        })
+          .exec();
+        return response(res, 200, 'success', {
+          team,
+          count: team.length
+        });
+      }
+    } catch (error) {
+      return response(res, 400, 'error', {
+        message: messages.error
+      });
+    }
+  }
 }
 
 export default TeamController;
