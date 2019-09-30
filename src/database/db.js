@@ -2,7 +2,7 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import messages from '../utils/messages';
-import mongooseConnect from '../config/mongodb';
+import { mongooseConnect } from '../config/mongodb';
 
 dotenv.config();
 
