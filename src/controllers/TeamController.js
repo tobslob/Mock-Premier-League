@@ -199,8 +199,14 @@ class TeamController {
    */
   static async viewAllTeam(req, res) {
     try {
+      let { page, perPage } = req.query;
+      perPage = perPage ? parseInt(perPage, 10) : 10;
+      page = page ? parseInt(page, 10) : 1;
       const teams = await TeamModel.find()
         .select('_id teamName teamMembers description createdAt updatedAt')
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .sort({ createdAt: -1 })
         .exec();
       return response(res, 200, 'success', {
         teams,
@@ -238,8 +244,7 @@ class TeamController {
           $or: [
             { teamName: new RegExp(`^${name}$`, 'i') },
             { description: new RegExp(`^${description}$`, 'i') },
-            { 'teamMembers.0.name': new RegExp(`^${name}$`, 'i') },
-            { 'teamMembers.0.role': new RegExp(`^${role}$`, 'i') }
+            { 'teamMembers.0.name': new RegExp(`^${memberName}$`, 'i') }
           ]
         })
           .exec();

@@ -26,6 +26,13 @@ const login = {
   password: 'Kazeem27'
 };
 
+const searchFixture = {
+  name: 'Arsenal',
+  status: '',
+  stadium: '',
+  date: '',
+};
+
 export {
-  createFixture, adminLogin, login, sameTeam, validFixture
+  createFixture, adminLogin, login, sameTeam, validFixture, searchFixture
 };

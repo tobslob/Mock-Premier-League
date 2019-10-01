@@ -13,4 +13,11 @@ const login = {
   password: 'Kazeem27'
 };
 
-export { createTeam, adminLogin, login };
+const searchTeam = {
+  name: 'kaztech2016@gmail.com',
+  password: 'Kazeem27'
+};
+
+export {
+  createTeam, adminLogin, login, searchTeam
+};
